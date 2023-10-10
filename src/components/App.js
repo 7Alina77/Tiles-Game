@@ -1,34 +1,65 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import Card from './Card';
-//import { useReducer } from 'react';
+import {cardsColors, initialState} from '../constants/constants';
 
 function App() {
   const [cards, setCards] = useState([]);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  const cardsColors = [
-    {'color': '#00FFFF'},
-    {'color': '#F08080'},
-    {'color': '#ADFF2F'},
-    {'color': '#FFD700'},
-    {'color': '#8A2BE2'},
-    {'color': '#BC8F8F'},
-    {'color': '#2F4F4F'},
-    {'color': '#C0C0C0'},
-  ];
-
-  function randomizeCards() {
-    const randomizedCards = [...cardsColors, ...cardsColors]
-    .sort(() => Math.random() - 0.5)
-    .map((card) => ({...card, id: Math.random()}))
-    setCards(randomizedCards);
-    return 
+  useEffect(() => {
+    console.log(state.firstCardColor, state.secondCardColor)
+    if(state.firstCardColor && state.secondCardColor) {
+      if (state.firstCardColor === state.secondCardColor) {
+        console.log("same");
+      } else {
+        console.log('not same');
+      }
+    }
+  },[state]);
+  
+  function reducer(state, action) {
+    switch(action.type) {
+      case 'click':
+        if(state.firstCardColor !== null && state.firstCardColor !== undefined) {
+          return {
+            isOpen: true,
+            firstCardColor: state.firstCardColor,
+            secondCardColor: action.card.color,
+          }
+        } else {
+        return {
+          isOpen: true,
+          firstCardColor: action.card.color,
+          secondCardColor: null,
+        }
+        }
+    }
+    switch(action.type) {
+      case 'reset':
+        return {
+          isOpen: false,
+          firstCardColor: null,
+          secondCardColor: null,
+        }
+    }
   }
 
-  /**useEffect(() => {
-    randomizeCards();
-  },[]);*/
+  function randomizeCards() {
+    dispatch ({
+      type: 'reset',
+    })
+    const randomizedCards = [...cardsColors, ...cardsColors]
+    .sort(() => Math.random() - 0.5)
+    .map((card) => ({...card, id: Math.random(), state: state.isOpen}))
+    setCards(randomizedCards);
+  }
 
-  console.log(cards);
+  function clickOnCard(card) {
+    dispatch({
+      type: 'click',
+      card,
+    })
+  }
 
   return (
     <div className='page'>
@@ -37,7 +68,7 @@ function App() {
       <section className='cards'>
         {cards.map((card) => {
           return (
-            <Card />
+            <Card clickOnCard={clickOnCard} key={card.id} card={card} state={state}/>
           )    
         })}
       </section>
