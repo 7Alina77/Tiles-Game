@@ -8,8 +8,19 @@ const cardsColors = [
   {'color': '#2F4F4F'},
   {'color': '#C0C0C0'},
 ];
-const initialState = {isOpen: false,
+
+function randomizeCards() {
+  const randomizedCards = [...cardsColors, ...cardsColors]
+    .sort(() => Math.random() - 0.5)
+    .map((card) => ({...card, id: Math.random(), isOpen: false}))
+    return randomizedCards;
+}
+
+const initialState = {allCards: randomizeCards(),
+                      cardIsOpen: [],
+                      firstCard: null,
+                      secondCard: null,
                       firstCardColor: null,
                       secondCardColor: null};
 
-export {cardsColors, initialState};
+export { initialState, randomizeCards};
