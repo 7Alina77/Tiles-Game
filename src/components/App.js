@@ -5,8 +5,8 @@ import { initialState, randomizeCards} from '../constants/constants';
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   
-  console.log(state) 
-  
+  console.log(state);
+
   function reducer(state, action) {
     switch(action.type) {
       case 'click':
@@ -35,47 +35,53 @@ function App() {
                 : card
                 )
               )),
-              firstCard: state.firstCard,
-              secondCard: action.card,
-              cardIsOpen: [...state.cardIsOpen, state.allCards.indexOf(action.card)],
-              firstCardColor: state.firstCardColor,
-              secondCardColor: action.card.color,
+              // firstCard: state.firstCard,
+              // secondCard: action.card,
+              // cardIsOpen: [...state.cardIsOpen, state.allCards.indexOf(action.card)],
+              // firstCardColor: state.firstCardColor,
+              // secondCardColor: action.card.color,
+              firstCard: null,
+              secondCard: null,
+              cardIsOpen:[],
+              firstCardColor: null,
+              secondCardColor: null,
             }
           } else if(state.firstCardColor !== state.secondCardColor) {
             console.log(2)
             return {
               allCards: state.allCards.map((card) => (
-                state.allCards.indexOf(card) === state.allCards.indexOf(action.card) 
+                (state.allCards.indexOf(card) === state.allCards.indexOf(action.card) 
                 ? {...card, isOpen: true}
-                : card 
+                : card )
               )),
               firstCard: state.firstCard,
               secondCard: state.allCards.indexOf(action.card),
-              cardIsOpen: [...state.cardIsOpen, state.allCards.indexOf(action.card)],
               firstCardColor: state.firstCardColor,
               secondCardColor: action.card.color,
             }
           }
          } else if(state.firstCardColor === state.secondCardColor) {
-          console.log(2)
+          console.log(3)
           return {
             allCards: state.allCards.map((card) => (
               state.allCards.indexOf(card) === state.allCards.indexOf(action.card) 
               ? {...card, isOpen: true}
               : card 
             )),
-            cardIsOpen: [],
-            firstCardColor: state.firstCardColor,
-            secondCardColor: action.card.color,
+            firstCard: state.allCards.indexOf(action.card),
+            secondCard: null,
+            cardIsOpen: state.allCards.indexOf(action.card),
+            firstCardColor: action.card.color,
+            secondCardColor: null,
           }
         } else if(state.firstCardColor !== state.secondCardColor){
           console.log('wtf')
           return {
             allCards: state.allCards.map((card) => (
-              // (state.allCards.indexOf(card) === state.allCards.indexOf(action.card) 
-              //   ? {...card, isOpen: true}
-              //   : card )
-              // &&
+              (state.allCards.indexOf(card) === state.allCards.indexOf(action.card) 
+                ? {...card, isOpen: false}
+                : card )
+              &&
               (state.allCards.indexOf(state.firstCard)
                 ? {...card, isOpen: false}
                 : card) 
