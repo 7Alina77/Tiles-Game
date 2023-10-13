@@ -35,11 +35,6 @@ function App() {
                 : card
                 )
               )),
-              // firstCard: state.firstCard,
-              // secondCard: action.card,
-              // cardIsOpen: [...state.cardIsOpen, state.allCards.indexOf(action.card)],
-              // firstCardColor: state.firstCardColor,
-              // secondCardColor: action.card.color,
               firstCard: null,
               secondCard: null,
               cardIsOpen:[],
@@ -90,11 +85,6 @@ function App() {
                 ? {...card, isOpen: false}
                 : card)
             )),
-            // cardIsOpen: state.allCards.indexOf(action.card),
-            // firstCardColor: action.card.color,
-            // secondCardColor: null,
-            // firstCard: state.allCards.indexOf(action.card),
-            // secondCard: null,
             cardIsOpen: [],
             firstCardColor: null,
             secondCardColor: null,
